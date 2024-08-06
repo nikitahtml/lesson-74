@@ -5,10 +5,12 @@ import path from 'path';
 const router = express.Router();
 const messagesPath = path.join(__dirname, '../../messages');
 
+
 router.get('/', async (req: Request, res: Response) => {
     try {
         const files = await fs.readdir(messagesPath);
         files.sort().reverse();
+
         const recentFiles = files.slice(0, 5);
         const messages = await Promise.all(recentFiles.map(async (file) => {
             const filePath = path.join(messagesPath, file);
@@ -23,6 +25,7 @@ router.get('/', async (req: Request, res: Response) => {
         console.error('Error reading messages:', error);
         res.status(500).send('Error reading messages');
     }
+
 });
 
 export default router;
